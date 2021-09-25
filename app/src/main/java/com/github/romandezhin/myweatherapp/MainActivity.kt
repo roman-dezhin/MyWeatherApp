@@ -1,13 +1,13 @@
-package com.github.roman_dezhin.myweatherapp
+package com.github.romandezhin.myweatherapp
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.github.roman_dezhin.myweatherapp.databinding.ActivityMainBinding
+import com.github.romandezhin.myweatherapp.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 

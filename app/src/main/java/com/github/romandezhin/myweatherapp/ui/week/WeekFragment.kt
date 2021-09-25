@@ -1,4 +1,4 @@
-package com.github.roman_dezhin.myweatherapp.ui.week
+package com.github.romandezhin.myweatherapp.ui.week
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.roman_dezhin.myweatherapp.databinding.FragmentWeekBinding
+import com.github.romandezhin.myweatherapp.databinding.FragmentWeekBinding
 
 class WeekFragment : Fragment() {
 

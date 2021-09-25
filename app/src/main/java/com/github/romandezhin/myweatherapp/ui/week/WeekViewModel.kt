@@ -1,13 +1,13 @@
-package com.github.roman_dezhin.myweatherapp.ui.map
+package com.github.romandezhin.myweatherapp.ui.week
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MapViewModel : ViewModel() {
+class WeekViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is map Fragment"
+        value = "This is week Fragment"
     }
     val text: LiveData<String> = _text
 }

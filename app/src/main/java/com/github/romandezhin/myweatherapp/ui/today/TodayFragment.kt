@@ -1,4 +1,4 @@
-package com.github.roman_dezhin.myweatherapp.ui.map
+package com.github.romandezhin.myweatherapp.ui.today
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.roman_dezhin.myweatherapp.databinding.FragmentMapBinding
+import com.github.romandezhin.myweatherapp.databinding.FragmentTodayBinding
 
-class MapFragment : Fragment() {
+class TodayFragment : Fragment() {
 
-    private lateinit var mapViewModel: MapViewModel
-    private var _binding: FragmentMapBinding? = null
+    private lateinit var todayViewModel: TodayViewModel
+    private var _binding: FragmentTodayBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,14 +23,14 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mapViewModel =
-            ViewModelProvider(this).get(MapViewModel::class.java)
+        todayViewModel =
+            ViewModelProvider(this).get(TodayViewModel::class.java)
 
-        _binding = FragmentMapBinding.inflate(inflater, container, false)
+        _binding = FragmentTodayBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textMap
-        mapViewModel.text.observe(viewLifecycleOwner, {
+        val textView: TextView = binding.textToday
+        todayViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root

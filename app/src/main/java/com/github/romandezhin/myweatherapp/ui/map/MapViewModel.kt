@@ -1,13 +1,13 @@
-package com.github.roman_dezhin.myweatherapp.ui.today
+package com.github.romandezhin.myweatherapp.ui.map
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class TodayViewModel : ViewModel() {
+class MapViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is today Fragment"
+        value = "This is map Fragment"
     }
     val text: LiveData<String> = _text
 }

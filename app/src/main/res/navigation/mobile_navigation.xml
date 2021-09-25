@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_today"
-        android:name="com.github.roman_dezhin.myweatherapp.ui.today.TodayFragment"
+        android:name="com.github.romandezhin.myweatherapp.ui.today.TodayFragment"
         android:label="@string/title_today"
         tools:layout="@layout/fragment_today" />
 
     <fragment
         android:id="@+id/navigation_week"
-        android:name="com.github.roman_dezhin.myweatherapp.ui.week.WeekFragment"
+        android:name="com.github.romandezhin.myweatherapp.ui.week.WeekFragment"
         android:label="@string/title_week"
         tools:layout="@layout/fragment_week" />
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.github.roman_dezhin.myweatherapp.ui.map.MapFragment"
+        android:name="com.github.romandezhin.myweatherapp.ui.map.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 </navigation>
