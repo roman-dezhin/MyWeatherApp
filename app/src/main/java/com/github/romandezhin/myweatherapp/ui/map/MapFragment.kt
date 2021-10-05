@@ -2,13 +2,18 @@ package com.github.romandezhin.myweatherapp.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.core.app.ActivityCompat
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,18 +26,22 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapFragment : Fragment(), OnMapReadyCallback,
-    ActivityCompat.OnRequestPermissionsResultCallback {
+class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var map: GoogleMap
     private var marker: Marker? = null
-    private var permissionDenied = false
     private lateinit var mapViewModel: MapViewModel
     private var _binding: FragmentMapBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                enableMyLocation()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +76,6 @@ class MapFragment : Fragment(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap ?: return
         enableMyLocation()
-        moveMyLocationButton()
         map.setOnMapClickListener {
             marker?.remove()
             marker = map.addMarker(MarkerOptions().position(it))
@@ -77,6 +85,21 @@ class MapFragment : Fragment(), OnMapReadyCallback,
                 findNavController().navigate(R.id.navigation_today)
             }
             false
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocation() {
+        if (!::map.isInitialized) return
+        val permission = Manifest.permission.ACCESS_COARSE_LOCATION
+        when {
+            ContextCompat.checkSelfPermission(requireActivity(), permission)
+                    == PackageManager.PERMISSION_GRANTED -> {
+                map.isMyLocationEnabled = true
+                moveMyLocationButton()
+            }
+            shouldShowRequestPermissionRationale(permission) -> askUserForOpeningAppSettings()
+            else -> requestPermissionLauncher.launch(permission)
         }
     }
 
@@ -91,51 +114,30 @@ class MapFragment : Fragment(), OnMapReadyCallback,
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode != PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            return
-        }
-        if (isPermissionGranted(permissions, grantResults)) {
-            enableMyLocation()
-        } else {
-            permissionDenied = true
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun enableMyLocation() {
-        if (!::map.isInitialized) return
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
+    private fun askUserForOpeningAppSettings() {
+        val appSettingsIntent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", requireContext().packageName, null)
+        )
+        if (activity?.packageManager?.resolveActivity(
+                appSettingsIntent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            ) == null
         ) {
-            map.isMyLocationEnabled = true
+            Toast.makeText(requireContext(), R.string.permission_denied_forever, Toast.LENGTH_SHORT)
+                .show()
         } else {
-            // Permission to access the location is missing. Show rationale and request permission
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION
-            )
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.permission_denied)
+                .setMessage(R.string.permission_denied_forever_message)
+                .setPositiveButton(R.string.open) { _, _ ->
+                    startActivity(appSettingsIntent)
+                }
+                .setNegativeButton(R.string.no_thanks) { _, _ ->
+                }
+                .create()
+                .show()
         }
-    }
-
-    private fun isPermissionGranted(
-        grantPermissions: Array<String>,
-        grantResults: IntArray
-    ): Boolean {
-        for (i in grantPermissions.indices) {
-            if (Manifest.permission.ACCESS_COARSE_LOCATION == grantPermissions[i]) {
-                return grantResults[i] == PackageManager.PERMISSION_GRANTED
-            }
-        }
-        return false
     }
 
     override fun onStart() {
@@ -174,7 +176,6 @@ class MapFragment : Fragment(), OnMapReadyCallback,
     }
 
     companion object {
-        private const val PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1
         private const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
         private const val MY_LOCATION_BUTTON_MARGIN = 32
     }
