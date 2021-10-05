@@ -52,6 +52,7 @@ dependencies {
     // as well to ensure that you have the latest features and bug fixes.
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
