@@ -82,7 +82,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         map.setOnMarkerClickListener {
             if (it == marker) {
-                findNavController().navigate(R.id.navigation_today)
+                val action = MapFragmentDirections.actionNavigationMapToNavigationToday(it.position)
+                findNavController().navigate(action)
             }
             false
         }

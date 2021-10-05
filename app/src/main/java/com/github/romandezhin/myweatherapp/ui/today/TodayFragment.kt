@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.github.romandezhin.myweatherapp.databinding.FragmentTodayBinding
 
 class TodayFragment : Fragment() {
 
+    private val args: TodayFragmentArgs by navArgs()
     private lateinit var todayViewModel: TodayViewModel
     private var _binding: FragmentTodayBinding? = null
 
@@ -31,7 +33,7 @@ class TodayFragment : Fragment() {
 
         val textView: TextView = binding.textToday
         todayViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
+            textView.text = args.position?.toString()
         })
         return root
     }

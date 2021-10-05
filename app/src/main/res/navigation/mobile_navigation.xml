@@ -9,7 +9,13 @@
         android:id="@+id/navigation_today"
         android:name="com.github.romandezhin.myweatherapp.ui.today.TodayFragment"
         android:label="@string/title_today"
-        tools:layout="@layout/fragment_today" />
+        tools:layout="@layout/fragment_today">
+        <argument
+            android:name="position"
+            app:argType="com.google.android.gms.maps.model.LatLng"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_week"
@@ -21,5 +27,9 @@
         android:id="@+id/navigation_map"
         android:name="com.github.romandezhin.myweatherapp.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_today"
+            app:destination="@id/navigation_today" />
+    </fragment>
 </navigation>
